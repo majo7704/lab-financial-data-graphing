@@ -1,0 +1,21 @@
+body {
+  margin: 0 auto;
+}
+.filterValue-block {
+  display: flex;
+  align-content: space-between;
+}
+div .value-block {
+  display: flex;
+  flex-direction: column;
+  padding-left: 30%;
+}
+div .filter-block {
+  margin-left: 5%;
+}
+.currency-block {
+  display: flex;
+  padding-left: 5%;
+}
+
+
