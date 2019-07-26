@@ -4,38 +4,49 @@ let ctx = document.getElementById('myChart').getContext("2d")
 // })
 let fromDate = document.getElementsByClassName('fromInput')[0].value;
 let toDate = document.getElementsByClassName('toInput')[0].value;
+let pElement = document.getElementsByTagName('p')
 
-let currency = 'USD'
+// let currency = 'USD'
 
-let getCurrency = currencies.USD.code
+let getCurrency = function() {
+  return document.getElementsByTagName("select")[0].value
+}
 function currencyLoad() {
-let getAllCurrencies = Object.keys(currencies)
-let selectField = document.getElementsByTagName('select')[0]
-let optionField = document.createElement('option')
-optionField.setAttribute('value', getAllCurrencies)
-selectField.appendChild(optionField)
+  let getAllCurrencies = Object.keys(currencies)
+  let selectField = document.getElementsByTagName('select')[0]
+  for (let i =0; i < getAllCurrencies.length; i ++){
+
+  let optionField = document.createElement('option')
+  optionField.setAttribute('value', getAllCurrencies[i])
+  optionField.innerHTML = getAllCurrencies[i];
+  selectField.appendChild(optionField)
+}
 }
 currencyLoad()
 
 function draw(fromDate, toDate, currency){
- axios.get(`http://api.coindesk.com/v1/bpi/historical/close.json?start=${fromDate}&end=${toDate}&currency=${currency}`)
+  
+ axios.get(`http://api.coindesk.com/v1/bpi/historical/close.json?start=${fromDate}&end=${toDate}&currency=${getCurrency()}`)
    .then(response => {
     let price = Object.values(response.data.bpi)
     let date = Object.keys(response.data.bpi)
-
+    // let currencyField = document.getElementsByTagName('p')
+    // let optionField = document.getElementsByTagName('option')
+    // currencyField.innerHTML = optionField.value;
+    
     let maxField = document.getElementsByClassName('max')[0]
     let maxValue = Math.max(...price);
-    maxField.textContent = maxValue + `${currency}`;
+    maxField.textContent = maxValue + `${getCurrency()}`;
     console.log(maxValue)
     
     let minField = document.getElementsByClassName('min')[0]
     let minValue = Math.min(...price);
-    minField.textContent = minValue + `${currency}`;
-
+    minField.textContent = minValue + `${getCurrency()}`;
+    
     document.getElementsByClassName('fromInput')[0].onchange = function (event) {
       console.log(event)
       fromDate = event.target.value
-      draw(fromDate, toDate)
+      draw(fromDate, toDate, currency)
     }
     document.getElementsByClassName('toInput')[0].onchange = function (event) {
       console.log(event)
@@ -93,5 +104,5 @@ function draw(fromDate, toDate, currency){
 
     }
 
-draw(fromDate, toDate, currencies)
+draw(fromDate, toDate, getCurrency())
 
