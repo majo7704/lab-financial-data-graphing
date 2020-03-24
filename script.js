@@ -30,9 +30,6 @@ function draw(fromDate, toDate, currency){
    .then(response => {
     let price = Object.values(response.data.bpi)
     let date = Object.keys(response.data.bpi)
-    // let currencyField = document.getElementsByTagName('p')
-    // let optionField = document.getElementsByTagName('option')
-    // currencyField.innerHTML = optionField.value;
     
     let maxField = document.getElementsByClassName('max')[0]
     let maxValue = Math.max(...price);
